@@ -1,0 +1,11 @@
+[package]
+name = "binary-reader"
+version = "0.1.0"
+authors = ["MPThLee <mpthlee@gmail.com>"]
+description = "A binary reader for rust-lang. not for serialize"
+readme = "README.md"
+
+publish = false
+
+[dependencies]
+byteorder = "1.1"
