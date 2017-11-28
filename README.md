@@ -13,4 +13,4 @@ TODO
  * Reference Document
  * Code Optimize
  * Support `float` and `double`
- * Add Tests for CI-like system.
+ * Return `Result`

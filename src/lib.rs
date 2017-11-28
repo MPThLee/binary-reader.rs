@@ -72,13 +72,13 @@ impl BinaryReader {
     }
 
     pub fn cstr(&mut self) -> String { // "abc" "null" "def"
-        let mut data = self.data.get(self.pos..self.length).unwrap().to_vec();
+        let mut data = self.data.clone().get(self.pos..self.length).unwrap().to_vec();
         data.reverse();
         let mut vec: Vec<u8> = Vec::new();
         loop {
             let a = data.pop().unwrap();
-            if a == 0u8 { self.pos += vec.len(); return String::from_utf8(vec).unwrap() }
-            vec.push(a);
+            if a == 0x00 { self.pos += vec.len() + 1; return String::from_utf8(vec).unwrap() }
+            else { vec.push(a); }
         }
     }
 
@@ -151,9 +151,4 @@ impl BinaryReader {
 
 
 #[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+mod tests;
