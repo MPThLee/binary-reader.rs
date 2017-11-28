@@ -9,8 +9,8 @@ TODO...
 TODO
 ----
  * Add Example(s).
- * Add `Little-Endian` support
-  - Maybe support `Native-Endian` too?
+ * Maybe support `Native-Endian`?
  * Reference Document
  * Code Optimize
  * Support `float` and `double`
+ * Add Tests for CI-like system.

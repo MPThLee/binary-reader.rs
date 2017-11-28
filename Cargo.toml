@@ -1,6 +1,6 @@
 [package]
 name = "binary-reader"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["MPThLee <mpthlee@gmail.com>"]
 description = "A binary reader for rust-lang. not for serialize"
 readme = "README.md"
@@ -8,7 +8,7 @@ license = "MIT"
 license-file = "LICENSE.md"
 repository = "https://github.com/MPThLee/binary-reader.rs"
 
-publish = false
+publish = true
 
 [dependencies]
 byteorder = "1.1"

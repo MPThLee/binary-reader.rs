@@ -1,20 +1,20 @@
 extern crate byteorder;
 
-use byteorder::{BigEndian, ReadBytesExt};
+use byteorder::{BigEndian, LittleEndian, ReadBytesExt};
 use std::io::prelude::*;
-/*
-pub enum Endians {
-    BigEndian,
-    LittleEndian,
-    NativeEndian
+
+pub enum Endian {
+    Big,
+    Little,
+    //Native
 }
-*/
+
 
 pub struct BinaryReader {
-    data: Vec<u8>,
-    pos: usize,
-    length: usize,
-    //endian: Endians
+    pub data: Vec<u8>,
+    pub pos: usize,
+    pub length: usize,
+    pub endian: Endian
 }
 
 impl BinaryReader {
@@ -22,7 +22,8 @@ impl BinaryReader {
         BinaryReader {
             data: Vec::new(),
             pos: 0,
-            length: 0
+            length: 0,
+            endian: Endian::Big
         }
     }
 
@@ -46,6 +47,10 @@ impl BinaryReader {
         a.length = file.read_to_end(&mut v).unwrap();
         a.data = v;
         a
+    }
+
+    pub fn set_endian(&mut self, endian: Endian) {
+        self.endian = endian
     }
 
     pub fn jmp(&mut self, pos: usize) {
@@ -86,19 +91,28 @@ impl BinaryReader {
     pub fn i16(&mut self) -> i16 {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
-        data.read_i16::<BigEndian>().unwrap()
+        match self.endian {
+            Endian::Big =>  data.read_i16::<BigEndian>().unwrap(),
+            Endian::Little => data.read_i16::<LittleEndian>().unwrap()
+        }
     }
 
     pub fn i32(&mut self) -> i32 {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
-        data.read_i32::<BigEndian>().unwrap()
+        match self.endian {
+            Endian::Big =>  data.read_i32::<BigEndian>().unwrap(),
+            Endian::Little => data.read_i32::<LittleEndian>().unwrap()
+        }
     }
 
     pub fn i64(&mut self) -> i64 {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
-        data.read_i64::<BigEndian>().unwrap()
+        match self.endian {
+            Endian::Big =>  data.read_i64::<BigEndian>().unwrap(),
+            Endian::Little => data.read_i64::<LittleEndian>().unwrap()
+        }
     }
 
     pub fn u8(&mut self) -> u8 {
@@ -110,19 +124,28 @@ impl BinaryReader {
     pub fn u16(&mut self) -> u16 {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
-        data.read_u16::<BigEndian>().unwrap()
+        match self.endian {
+            Endian::Big =>  data.read_u16::<BigEndian>().unwrap(),
+            Endian::Little => data.read_u16::<LittleEndian>().unwrap()
+        }
     }
 
     pub fn u32(&mut self) -> u32 {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
-        data.read_u32::<BigEndian>().unwrap()
+        match self.endian {
+            Endian::Big =>  data.read_u32::<BigEndian>().unwrap(),
+            Endian::Little => data.read_u32::<LittleEndian>().unwrap()
+        }
     }
 
     pub fn u64(&mut self) -> u64 {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
-        data.read_u64::<BigEndian>().unwrap()
+        match self.endian {
+            Endian::Big =>  data.read_u64::<BigEndian>().unwrap(),
+            Endian::Little => data.read_u64::<LittleEndian>().unwrap()
+        }
     }
 }
 
