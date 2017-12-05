@@ -25,6 +25,8 @@ addons:
       - cmake
       - gcc
       - binutils-dev
+      - libbfd-dev
+      - build-essential
 
 
 before_script:
@@ -37,12 +39,12 @@ script:
   - cargo test --verbose --all
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT &&
 
 after_success: |
-  wget https://github.com/SimonKagstrom/kcov/archive/v31.tar.gz -O v31.tar.gz &&
-  tar xzf v31.tar.gz &&
-  cd kcov-31 &&
+  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
+  tar xzf master.tar.gz &&
+  cd kcov-master &&
   mkdir build &&
   cd build &&
   cmake .. &&
