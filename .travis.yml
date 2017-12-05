@@ -26,6 +26,7 @@ addons:
       - gcc
       - binutils-dev
       - build-essential
+      - libiberty-dev
 
 
 before_script:
