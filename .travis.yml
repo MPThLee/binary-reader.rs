@@ -25,7 +25,6 @@ addons:
       - cmake
       - gcc
       - binutils-dev
-      - libbfd-dev
       - build-essential
 
 
