@@ -40,9 +40,9 @@ after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 after_success: |
-  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
-  tar xzf master.tar.gz &&
-  cd kcov-master &&
+  wget https://github.com/SimonKagstrom/kcov/archive/v31.tar.gz -O v31.tar.gz &&
+  tar xzf v31.tar.gz &&
+  cd kcov-31 &&
   mkdir build &&
   cd build &&
   cmake .. &&
