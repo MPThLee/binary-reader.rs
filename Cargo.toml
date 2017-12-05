@@ -5,10 +5,14 @@ authors = ["MPThLee <mpthlee@gmail.com>"]
 description = "A binary reader for rust-lang. not for serialize"
 readme = "README.md"
 license = "MIT"
-license-file = "LICENSE.md"
 repository = "https://github.com/MPThLee/binary-reader.rs"
 
 publish = true
+
+[badges]
+travis-ci = { repository = "MPThLee/binary-reader.rs" }
+coveralls = { repository = "MPThLee/binary-reader.rs" }
+
 
 [dependencies]
 byteorder = "1.1"
