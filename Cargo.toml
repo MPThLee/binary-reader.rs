@@ -2,7 +2,7 @@
 name = "binary-reader"
 version = "0.1.2"
 authors = ["MPThLee <mpthlee@gmail.com>"]
-description = "A binary reader for rust-lang. not for serialize"
+description = "A binary reader for rust-lang. for step by step."
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/MPThLee/binary-reader.rs"

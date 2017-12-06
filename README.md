@@ -6,7 +6,7 @@ binary-reader
 [![Coverage Status][CoverallsBadge]][Coveralls]
 [![Dependency Status][DependencyCIBadge]][DependencyCI]
 
-A binary reader for rust-lang. not for serialize.
+A binary reader for rust-lang. for step by step.
 
 Example
 -------
