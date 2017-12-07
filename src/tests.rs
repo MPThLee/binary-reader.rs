@@ -23,8 +23,31 @@ fn read_interger_signed() {
         0x15, 0x05, 0xB4, 0xA9,
         0x05, 0x8D, 0x15, 0xE1, 0x76, 0x28, 0x00, 0x00];
     let mut bin = BinaryReader::from_vec(&vector);
-    assert_eq!(1_9, bin.read_i8());
-    assert_eq!(2_935, bin.read_i16());
-    assert_eq!(3_52695465, bin.read_i32());
-    assert_eq!(4_00000000000000000, bin.read_i64());
+    assert_eq!(1_9, bin.read_i8().unwrap());
+    assert_eq!(2_935, bin.read_i16().unwrap());
+    assert_eq!(3_52695465, bin.read_i32().unwrap());
+    assert_eq!(4_00000000000000000, bin.read_i64().unwrap());
+}
+
+#[test]
+fn interger_pos_jump_and_endian_parsing() {
+    let vector: Vec<u8> = vec![0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF];
+
+    let mut bin = BinaryReader::from_vec(&vector);
+
+    bin.set_endian(Endian::Big);
+    assert_eq!(291, bin.read_i16().unwrap());
+    assert_eq!(1164413355, bin.read_i32().unwrap());
+    assert_eq!(-12817, bin.read_i16().unwrap());
+    bin.jmp(0);
+    assert_eq!(81985529216486895, bin.read_i64().unwrap());
+
+    bin.jmp(0);
+    bin.set_endian(Endian::Little);
+
+    assert_eq!(8961, bin.read_i16().unwrap());
+    assert_eq!(-1417058491, bin.read_i32().unwrap());
+    assert_eq!(-4147, bin.read_i16().unwrap());
+    bin.jmp(0);
+    assert_eq!(-1167088121787636991, bin.read_i64().unwrap());
 }

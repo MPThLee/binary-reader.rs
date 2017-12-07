@@ -12,8 +12,8 @@
 //!     let mut binary = BinaryReader::from_vec(&vector);
 //!     binary.set_endian(Endian::Big);
 //! 
-//!     assert_eq!("Hello, World!", binary.cstr());
-//!     assert_eq!(2_935, binary.i16());
+//!     assert_eq!("Hello, World!", binary.read_cstr());
+//!     assert_eq!(2_935, binary.read_i16().unwrap());
 //! }
 //! ```
 
