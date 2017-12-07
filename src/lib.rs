@@ -101,7 +101,7 @@ impl BinaryReader {
 
     /// Read cstr.
     /// Read String(s) until `null`(aka `0x00`).
-    pub fn cstr(&mut self) -> String { // "abc" "null" "def"
+    pub fn read_cstr(&mut self) -> String { // "abc" "null" "def"
         let mut data = self.data.clone().get(self.pos..self.length).unwrap().to_vec();
         data.reverse();
         let mut vec: Vec<u8> = Vec::new();
@@ -113,76 +113,76 @@ impl BinaryReader {
     }
 
     /// read signed 8 bit interger
-    pub fn i8(&mut self) -> i8 {
+    pub fn read_i8(&mut self) -> std::io::Result<i8> {
         let mut data = self.data.get(self.pos..self.pos + 1).unwrap();
         self.pos += 1;
-        data.read_i8().unwrap()
+        data.read_i8()
     }
 
     /// read signed 16 bit interger
-    pub fn i16(&mut self) -> i16 {
+    pub fn read_i16(&mut self) -> std::io::Result<i16> {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
         match self.endian {
-            Endian::Big =>  data.read_i16::<BigEndian>().unwrap(),
-            Endian::Little => data.read_i16::<LittleEndian>().unwrap()
+            Endian::Big =>  data.read_i16::<BigEndian>(),
+            Endian::Little => data.read_i16::<LittleEndian>()
         }
     }
 
     /// read signed 32 bit interger
-    pub fn i32(&mut self) -> i32 {
+    pub fn read_i32(&mut self) -> std::io::Result<i32> {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
         match self.endian {
-            Endian::Big =>  data.read_i32::<BigEndian>().unwrap(),
-            Endian::Little => data.read_i32::<LittleEndian>().unwrap()
+            Endian::Big =>  data.read_i32::<BigEndian>(),
+            Endian::Little => data.read_i32::<LittleEndian>()
         }
     }
 
     /// read signed 64 bit interger
-    pub fn i64(&mut self) -> i64 {
+    pub fn read_i64(&mut self) -> std::io::Result<i64> {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
         match self.endian {
-            Endian::Big =>  data.read_i64::<BigEndian>().unwrap(),
-            Endian::Little => data.read_i64::<LittleEndian>().unwrap()
+            Endian::Big =>  data.read_i64::<BigEndian>(),
+            Endian::Little => data.read_i64::<LittleEndian>()
         }
     }
 
     /// read unsigned 8 bit interger
-    pub fn u8(&mut self) -> u8 {
+    pub fn read_u8(&mut self) -> std::io::Result<u8> {
         let mut data = self.data.get(self.pos..self.pos + 1).unwrap();
         self.pos += 1;
-        data.read_u8().unwrap()
+        data.read_u8()
     }
 
     /// read unsigned 16 bit interger
-    pub fn u16(&mut self) -> u16 {
+    pub fn read_u16(&mut self) -> std::io::Result<u16> {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
         match self.endian {
-            Endian::Big =>  data.read_u16::<BigEndian>().unwrap(),
-            Endian::Little => data.read_u16::<LittleEndian>().unwrap()
+            Endian::Big =>  data.read_u16::<BigEndian>(),
+            Endian::Little => data.read_u16::<LittleEndian>()
         }
     }
 
     /// read unsigned 32 bit interger
-    pub fn u32(&mut self) -> u32 {
+    pub fn read_u32(&mut self) -> std::io::Result<u32> {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
         match self.endian {
-            Endian::Big =>  data.read_u32::<BigEndian>().unwrap(),
-            Endian::Little => data.read_u32::<LittleEndian>().unwrap()
+            Endian::Big =>  data.read_u32::<BigEndian>(),
+            Endian::Little => data.read_u32::<LittleEndian>()
         }
     }
 
     /// read unsigned 64 bit interger
-    pub fn u64(&mut self) -> u64 {
+    pub fn read_u64(&mut self) -> std::io::Result<u64> {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
         match self.endian {
-            Endian::Big =>  data.read_u64::<BigEndian>().unwrap(),
-            Endian::Little => data.read_u64::<LittleEndian>().unwrap()
+            Endian::Big =>  data.read_u64::<BigEndian>(),
+            Endian::Little => data.read_u64::<LittleEndian>()
         }
     }
 }
