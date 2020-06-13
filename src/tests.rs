@@ -16,7 +16,7 @@ fn read_cstr() {
 }
 
 #[test]
-fn read_interger_signed() {
+fn read_integer_signed() {
     let vector: Vec<u8> = vec![
         0x13, 
         0x0B, 0x77, 
@@ -48,7 +48,7 @@ fn read_float_64() {
 }
 
 #[test]
-fn interger_pos_jump_and_endian_parsing() {
+fn integer_pos_jump_and_endian_parsing() {
     let vector: Vec<u8> = vec![0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF];
 
     let mut bin = BinaryReader::from_vec(&vector);
