@@ -149,6 +149,28 @@ impl BinaryReader {
         }
     }
 
+    /// read 32 bit float
+    pub fn read_f32(&mut self) -> std::io::Result<f32> {
+        let mut data = self.data.get(self.pos..self.pos+4).unwrap();
+        self.pos += 4;
+
+        match self.endian {
+            Endian::Big =>  data.read_f32::<BigEndian>(),
+            Endian::Little => data.read_f32::<LittleEndian>()
+        }
+    }
+
+    /// read 64 bit float
+    pub fn read_f64(&mut self) -> std::io::Result<f64> {
+        let mut data = self.data.get(self.pos..self.pos+8).unwrap();
+        self.pos += 8;
+
+        match self.endian {
+            Endian::Big =>  data.read_f64::<BigEndian>(),
+            Endian::Little => data.read_f64::<LittleEndian>()
+        }
+    }
+
     /// read unsigned 8 bit integer
     pub fn read_u8(&mut self) -> std::io::Result<u8> {
         let mut data = self.data.get(self.pos..self.pos + 1).unwrap();

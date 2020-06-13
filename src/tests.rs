@@ -30,6 +30,24 @@ fn read_interger_signed() {
 }
 
 #[test]
+fn read_float_32() {
+    let initial_float = 255.254_f32;
+    let vector: Vec<u8> = initial_float.to_be_bytes().to_vec();
+    
+    let mut bin = BinaryReader::from_vec(&vector);
+    assert_eq!(255.254_f32, bin.read_f32().unwrap());
+}
+
+#[test]
+fn read_float_64() {
+    let initial_float = 255.254_f64;
+    let vector: Vec<u8> = initial_float.to_be_bytes().to_vec();
+    
+    let mut bin = BinaryReader::from_vec(&vector);
+    assert_eq!(255.254_f64, bin.read_f64().unwrap());
+}
+
+#[test]
 fn interger_pos_jump_and_endian_parsing() {
     let vector: Vec<u8> = vec![0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF];
 
