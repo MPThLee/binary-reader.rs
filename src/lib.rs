@@ -112,14 +112,14 @@ impl BinaryReader {
         }
     }
 
-    /// read signed 8 bit interger
+    /// read signed 8 bit integer
     pub fn read_i8(&mut self) -> std::io::Result<i8> {
         let mut data = self.data.get(self.pos..self.pos + 1).unwrap();
         self.pos += 1;
         data.read_i8()
     }
 
-    /// read signed 16 bit interger
+    /// read signed 16 bit integer
     pub fn read_i16(&mut self) -> std::io::Result<i16> {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
@@ -129,7 +129,7 @@ impl BinaryReader {
         }
     }
 
-    /// read signed 32 bit interger
+    /// read signed 32 bit integer
     pub fn read_i32(&mut self) -> std::io::Result<i32> {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
@@ -139,7 +139,7 @@ impl BinaryReader {
         }
     }
 
-    /// read signed 64 bit interger
+    /// read signed 64 bit integer
     pub fn read_i64(&mut self) -> std::io::Result<i64> {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
@@ -149,14 +149,36 @@ impl BinaryReader {
         }
     }
 
-    /// read unsigned 8 bit interger
+    /// read 32 bit float
+    pub fn read_f32(&mut self) -> std::io::Result<f32> {
+        let mut data = self.data.get(self.pos..self.pos+4).unwrap();
+        self.pos += 4;
+
+        match self.endian {
+            Endian::Big =>  data.read_f32::<BigEndian>(),
+            Endian::Little => data.read_f32::<LittleEndian>()
+        }
+    }
+
+    /// read 64 bit float
+    pub fn read_f64(&mut self) -> std::io::Result<f64> {
+        let mut data = self.data.get(self.pos..self.pos+8).unwrap();
+        self.pos += 8;
+
+        match self.endian {
+            Endian::Big =>  data.read_f64::<BigEndian>(),
+            Endian::Little => data.read_f64::<LittleEndian>()
+        }
+    }
+
+    /// read unsigned 8 bit integer
     pub fn read_u8(&mut self) -> std::io::Result<u8> {
         let mut data = self.data.get(self.pos..self.pos + 1).unwrap();
         self.pos += 1;
         data.read_u8()
     }
 
-    /// read unsigned 16 bit interger
+    /// read unsigned 16 bit integer
     pub fn read_u16(&mut self) -> std::io::Result<u16> {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
@@ -166,7 +188,7 @@ impl BinaryReader {
         }
     }
 
-    /// read unsigned 32 bit interger
+    /// read unsigned 32 bit integer
     pub fn read_u32(&mut self) -> std::io::Result<u32> {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
@@ -176,7 +198,7 @@ impl BinaryReader {
         }
     }
 
-    /// read unsigned 64 bit interger
+    /// read unsigned 64 bit integer
     pub fn read_u64(&mut self) -> std::io::Result<u64> {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
