@@ -18,7 +18,7 @@ TODO
  * Maybe support `Native-Endian`?
  * Reference Document
  * Code Optimize
- * Support `float` and `double`
+ * Support `double`
  * Return `Result`
 
 [CratesIO]: https://crates.io/crates/binary-reader
