@@ -11,7 +11,7 @@
 //!     let vector: Vec<u8> = vec![0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00, 0x0B, 0x77];
 //!     let mut binary = BinaryReader::from_vec(&vector);
 //!     binary.set_endian(Endian::Big);
-//! 
+//!
 //!     assert_eq!("Hello, World!", binary.read_cstr());
 //!     assert_eq!(2_935, binary.read_i16().unwrap());
 //! }
@@ -28,7 +28,6 @@ pub enum Endian {
     Little,
     //Native
 }
-
 
 pub struct BinaryReader {
     pub data: Vec<u8>,
@@ -73,7 +72,7 @@ impl BinaryReader {
         a
     }
 
-    /// Set endian for read method. 
+    /// Set endian for read method.
     pub fn set_endian(&mut self, endian: Endian) {
         self.endian = endian
     }
@@ -112,11 +111,11 @@ impl BinaryReader {
         let mut vec: Vec<u8> = Vec::new();
         loop {
             let a = data.pop().unwrap();
-            if a == 0x00 { 
-                self.pos += vec.len() + 1; 
-                return String::from_utf8(vec).unwrap()
-            } else { 
-                vec.push(a); 
+            if a == 0x00 {
+                self.pos += vec.len() + 1;
+                return String::from_utf8(vec).unwrap();
+            } else {
+                vec.push(a);
             }
         }
     }
@@ -217,7 +216,6 @@ impl BinaryReader {
         }
     }
 }
-
 
 #[cfg(test)]
 mod tests;
