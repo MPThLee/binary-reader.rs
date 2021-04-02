@@ -1,12 +1,12 @@
 //! A Binary reader for step by step.
-//! 
+//!
 //! # Example
-//! 
+//!
 //! ```
 //! extern crate binary_reader;
-//! 
+//!
 //! use binary_reader::{Endian, BinaryReader};
-//! 
+//!
 //! fn main() {
 //!     let vector: Vec<u8> = vec![0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00, 0x0B, 0x77];
 //!     let mut binary = BinaryReader::from_vec(&vector);
@@ -34,7 +34,7 @@ pub struct BinaryReader {
     pub data: Vec<u8>,
     pub pos: usize,
     pub length: usize,
-    pub endian: Endian
+    pub endian: Endian,
 }
 
 impl BinaryReader {
@@ -44,7 +44,7 @@ impl BinaryReader {
             data: Vec::new(),
             pos: 0,
             length: 0,
-            endian: Endian::Big
+            endian: Endian::Big,
         }
     }
 
@@ -83,7 +83,6 @@ impl BinaryReader {
         self.pos = pos
     }
 
-
     pub fn adv(&mut self, size: usize) {
         self.pos += size
     }
@@ -101,14 +100,24 @@ impl BinaryReader {
 
     /// Read cstr.
     /// Read String(s) until `null`(aka `0x00`).
-    pub fn read_cstr(&mut self) -> String { // "abc" "null" "def"
-        let mut data = self.data.clone().get(self.pos..self.length).unwrap().to_vec();
+    pub fn read_cstr(&mut self) -> String {
+        // "abc" "null" "def"
+        let mut data = self
+            .data
+            .clone()
+            .get(self.pos..self.length)
+            .unwrap()
+            .to_vec();
         data.reverse();
         let mut vec: Vec<u8> = Vec::new();
         loop {
             let a = data.pop().unwrap();
-            if a == 0x00 { self.pos += vec.len() + 1; return String::from_utf8(vec).unwrap() }
-            else { vec.push(a); }
+            if a == 0x00 { 
+                self.pos += vec.len() + 1; 
+                return String::from_utf8(vec).unwrap()
+            } else { 
+                vec.push(a); 
+            }
         }
     }
 
@@ -124,8 +133,8 @@ impl BinaryReader {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
         match self.endian {
-            Endian::Big =>  data.read_i16::<BigEndian>(),
-            Endian::Little => data.read_i16::<LittleEndian>()
+            Endian::Big => data.read_i16::<BigEndian>(),
+            Endian::Little => data.read_i16::<LittleEndian>(),
         }
     }
 
@@ -134,8 +143,8 @@ impl BinaryReader {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
         match self.endian {
-            Endian::Big =>  data.read_i32::<BigEndian>(),
-            Endian::Little => data.read_i32::<LittleEndian>()
+            Endian::Big => data.read_i32::<BigEndian>(),
+            Endian::Little => data.read_i32::<LittleEndian>(),
         }
     }
 
@@ -144,30 +153,30 @@ impl BinaryReader {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
         match self.endian {
-            Endian::Big =>  data.read_i64::<BigEndian>(),
-            Endian::Little => data.read_i64::<LittleEndian>()
+            Endian::Big => data.read_i64::<BigEndian>(),
+            Endian::Little => data.read_i64::<LittleEndian>(),
         }
     }
 
     /// read 32 bit float
     pub fn read_f32(&mut self) -> std::io::Result<f32> {
-        let mut data = self.data.get(self.pos..self.pos+4).unwrap();
+        let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
 
         match self.endian {
-            Endian::Big =>  data.read_f32::<BigEndian>(),
-            Endian::Little => data.read_f32::<LittleEndian>()
+            Endian::Big => data.read_f32::<BigEndian>(),
+            Endian::Little => data.read_f32::<LittleEndian>(),
         }
     }
 
     /// read 64 bit float
     pub fn read_f64(&mut self) -> std::io::Result<f64> {
-        let mut data = self.data.get(self.pos..self.pos+8).unwrap();
+        let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
 
         match self.endian {
-            Endian::Big =>  data.read_f64::<BigEndian>(),
-            Endian::Little => data.read_f64::<LittleEndian>()
+            Endian::Big => data.read_f64::<BigEndian>(),
+            Endian::Little => data.read_f64::<LittleEndian>(),
         }
     }
 
@@ -183,8 +192,8 @@ impl BinaryReader {
         let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
         self.pos += 2;
         match self.endian {
-            Endian::Big =>  data.read_u16::<BigEndian>(),
-            Endian::Little => data.read_u16::<LittleEndian>()
+            Endian::Big => data.read_u16::<BigEndian>(),
+            Endian::Little => data.read_u16::<LittleEndian>(),
         }
     }
 
@@ -193,8 +202,8 @@ impl BinaryReader {
         let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
         self.pos += 4;
         match self.endian {
-            Endian::Big =>  data.read_u32::<BigEndian>(),
-            Endian::Little => data.read_u32::<LittleEndian>()
+            Endian::Big => data.read_u32::<BigEndian>(),
+            Endian::Little => data.read_u32::<LittleEndian>(),
         }
     }
 
@@ -203,8 +212,8 @@ impl BinaryReader {
         let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
         self.pos += 8;
         match self.endian {
-            Endian::Big =>  data.read_u64::<BigEndian>(),
-            Endian::Little => data.read_u64::<LittleEndian>()
+            Endian::Big => data.read_u64::<BigEndian>(),
+            Endian::Little => data.read_u64::<LittleEndian>(),
         }
     }
 }

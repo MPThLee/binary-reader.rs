@@ -6,13 +6,22 @@ description = "A binary reader for rust-lang. for step by step."
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/MPThLee/binary-reader.rs"
-rust="1.41.1"
 publish = true
+
+# Rust version.
+rust="1.41.1"
+edition="2018"
+
+# Abort instead of panic, Since it doesn't need panic in this library.
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
 
 [badges]
 travis-ci = { repository = "MPThLee/binary-reader.rs" }
 coveralls = { repository = "MPThLee/binary-reader.rs" }
-
 
 [dependencies]
 byteorder = "^1.4"
