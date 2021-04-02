@@ -4,7 +4,7 @@ binary-reader
 [![Documentation][DocsRsBadge]][DocsRs]
 [![Build Status][TravisCIBadge]][TravisCI]
 [![Coverage Status][CoverallsBadge]][Coveralls]
-[![Dependency Status][DependencyCIBadge]][DependencyCI]
+[![Dependency Status][DepsRsBadge]][DepsRs]
 
 A binary reader for rust-lang. for step by step.
 
@@ -33,5 +33,5 @@ TODO
 [Coveralls]: https://coveralls.io/github/MPThLee/binary-reader.rs?branch=master
 [CoverallsBadge]: https://coveralls.io/repos/github/MPThLee/binary-reader.rs/badge.svg?branch=master
 
-[DependencyCI]: https://dependencyci.com/github/MPThLee/binary-reader.rs
-[DependencyCIBadge]: https://dependencyci.com/github/MPThLee/binary-reader.rs/badge
+[DepsRs]: https://deps.rs/repo/github/mpthlee/binary-reader.rs
+[DepsRsBadge]: https://deps.rs/repo/github/mpthlee/binary-reader.rs/status.svg
