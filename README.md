@@ -2,7 +2,7 @@ binary-reader
 -------------
 [![Crates][CratesIOBadge]][CratesIO]
 [![Documentation][DocsRsBadge]][DocsRs]
-[![Build Status][TravisCIBadge]][TravisCI]
+[![Continuous Integration][GithubActionsBadge]][GithubActions]
 [![Coverage Status][CoverallsBadge]][Coveralls]
 [![Dependency Status][DepsRsBadge]][DepsRs]
 
@@ -14,12 +14,13 @@ TODO...
 
 TODO
 ----
- * Add Example(s).
+ * Add Example(s)
  * Maybe support `Native-Endian`?
  * Reference Document
  * Code Optimize
  * Support `double`
  * Return `Result`
+ * More tests
 
 [CratesIO]: https://crates.io/crates/binary-reader
 [CratesIOBadge]: https://img.shields.io/crates/v/binary-reader.svg
@@ -27,8 +28,8 @@ TODO
 [DocsRs]: https://docs.rs/binary-reader
 [DocsRsBadge]: https://docs.rs/binary-reader/badge.svg
 
-[TravisCI]: https://travis-ci.org/MPThLee/binary-reader.rs
-[TravisCIBadge]: https://travis-ci.org/MPThLee/binary-reader.rs.svg?branch=master
+[GithubActions]: https://github.com/MPThLee/binary-reader.rs/actions/workflows/ci.yml
+[GithubActionsBadge]: https://github.com/MPThLee/binary-reader.rs/actions/workflows/ci.yml/badge.svg
 
 [Coveralls]: https://coveralls.io/github/MPThLee/binary-reader.rs?branch=master
 [CoverallsBadge]: https://coveralls.io/repos/github/MPThLee/binary-reader.rs/badge.svg?branch=master

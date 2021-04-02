@@ -59,12 +59,10 @@ jobs:
       matrix:
         rust:
           - stable
-          - 1.41.1
         allowfailure: 
           - false
         include:
           - rust: 1.41.1
-            os: ubuntu-latest
             allowfailure: true
     steps:
       - name: Checkout sources
