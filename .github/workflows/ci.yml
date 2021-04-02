@@ -60,6 +60,12 @@ jobs:
         rust:
           - stable
           - 1.41.1
+        allowfailure: 
+          - false
+        include:
+          - rust: 1.41.1
+            os: ubuntu-latest
+            allowfailure: true
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -80,6 +86,7 @@ jobs:
 
       - name: Run cargo clippy
         uses: actions-rs/cargo@v1
+        continue-on-error: ${{ matrix.allowfailure }}
         with:
           command: clippy
           args: -- -D warnings
