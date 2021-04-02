@@ -15,4 +15,4 @@ coveralls = { repository = "MPThLee/binary-reader.rs" }
 
 
 [dependencies]
-byteorder = "1.1"
+byteorder = "^1.4"
