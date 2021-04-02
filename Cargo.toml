@@ -1,12 +1,12 @@
 [package]
 name = "binary-reader"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["MPThLee <mpthlee@gmail.com>"]
 description = "A binary reader for rust-lang. for step by step."
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/MPThLee/binary-reader.rs"
-
+rust="1.41.1"
 publish = true
 
 [badges]
