@@ -56,6 +56,8 @@ impl BinaryReader {
     }
 
     /// Initialize BinaryReader from u8 Vector.
+    // This was due to about previous bugs. I don't remember correctly however for now.
+    #[allow(clippy::ptr_arg)]
     pub fn from_vec(vec: &Vec<u8>) -> BinaryReader {
         let mut a = BinaryReader::initialize();
         a.data = vec.to_vec();
