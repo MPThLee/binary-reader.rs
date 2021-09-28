@@ -13,9 +13,9 @@ fn read_cstr() {
     ];
     // "Hello, World" + null + "o/"
     let mut bin = BinaryReader::from_vec(&vector);
-    assert_eq!("Hello, World!", bin.read_cstr());
+    assert_eq!("Hello, World!", bin.read_cstr().unwrap());
     assert_eq!(14, bin.pos);
-    assert_eq!("o/", bin.read_cstr());
+    assert_eq!("o/", bin.read_cstr().unwrap());
 }
 
 #[test]
