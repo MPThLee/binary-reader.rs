@@ -68,6 +68,7 @@ impl BinaryReader {
         a
     }
 
+    #[allow(clippy::ptr_arg)]
     /// Initialize BinaryReader from u8 Vector.
     pub fn from_vec(vec: &Vec<u8>) -> BinaryReader {
         let mut a = BinaryReader::initialize();
@@ -135,11 +136,11 @@ impl BinaryReader {
             let a = data.pop().unwrap();
             if a == 0x00 {
                 self.pos += vec.len() + 1;
-                return String::from_utf8(vec).or_else(|err| {
-                    Err(Error::new(
+                return String::from_utf8(vec).map_err(|err| {
+                    Error::new(
                         ErrorKind::UnexpectedEof,
                         format!("failed to convert to string: {:?}", err),
-                    ))
+                    )
                 });
             } else {
                 vec.push(a);
