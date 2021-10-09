@@ -19,7 +19,6 @@ TODO
  * Reference Document
  * Code Optimize
  * Support `double`
- * Return `Result`
  * More tests
 
 [CratesIO]: https://crates.io/crates/binary-reader
