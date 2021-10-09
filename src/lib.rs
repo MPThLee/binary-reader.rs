@@ -12,7 +12,7 @@
 //!     let mut binary = BinaryReader::from_vec(&vector);
 //!     binary.set_endian(Endian::Big);
 //!
-//!     assert_eq!("Hello, World!", binary.read_cstr());
+//!     assert_eq!("Hello, World!", binary.read_cstr().unwrap());
 //!     assert_eq!(2_935, binary.read_i16().unwrap());
 //! }
 //! ```
@@ -20,9 +20,10 @@
 extern crate byteorder;
 
 use byteorder::{BigEndian, LittleEndian, ReadBytesExt};
-use std::io::prelude::*;
+use std::io::{prelude::*, Error, ErrorKind};
 
 /// An Enums for set Endian.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Endian {
     Big,
     Little,
@@ -47,6 +48,18 @@ impl BinaryReader {
         }
     }
 
+    fn read_bytes(&mut self, bytes: usize) -> std::io::Result<&[u8]> {
+        let data = self.data.get(self.pos..self.pos + bytes).ok_or_else(|| {
+            Error::new(
+                ErrorKind::UnexpectedEof,
+                format!("failed to read {} bytes from offset {}", bytes, self.pos),
+            )
+        })?;
+        self.pos += bytes;
+
+        Ok(data)
+    }
+
     /// Initialize BinaryReader from u8 slice.
     pub fn from_u8(get: &[u8]) -> BinaryReader {
         let mut a = BinaryReader::initialize();
@@ -56,8 +69,6 @@ impl BinaryReader {
     }
 
     /// Initialize BinaryReader from u8 Vector.
-    // This was due to about previous bugs. I don't remember correctly however for now.
-    #[allow(clippy::ptr_arg)]
     pub fn from_vec(vec: &Vec<u8>) -> BinaryReader {
         let mut a = BinaryReader::initialize();
         a.data = vec.to_vec();
@@ -101,13 +112,22 @@ impl BinaryReader {
 
     /// Read cstr.
     /// Read String(s) until `null`(aka `0x00`).
-    pub fn read_cstr(&mut self) -> String {
+    pub fn read_cstr(&mut self) -> std::io::Result<String> {
         // "abc" "null" "def"
         let mut data = self
             .data
             .clone()
             .get(self.pos..self.length)
-            .unwrap()
+            .ok_or_else(|| {
+                Error::new(
+                    ErrorKind::UnexpectedEof,
+                    format!(
+                        "failed to read {} bytes from offset {}",
+                        self.length - self.pos,
+                        self.pos
+                    ),
+                )
+            })?
             .to_vec();
         data.reverse();
         let mut vec: Vec<u8> = Vec::new();
@@ -115,7 +135,12 @@ impl BinaryReader {
             let a = data.pop().unwrap();
             if a == 0x00 {
                 self.pos += vec.len() + 1;
-                return String::from_utf8(vec).unwrap();
+                return String::from_utf8(vec).or_else(|err| {
+                    Err(Error::new(
+                        ErrorKind::UnexpectedEof,
+                        format!("failed to convert to string: {:?}", err),
+                    ))
+                });
             } else {
                 vec.push(a);
             }
@@ -124,16 +149,15 @@ impl BinaryReader {
 
     /// read signed 8 bit integer
     pub fn read_i8(&mut self) -> std::io::Result<i8> {
-        let mut data = self.data.get(self.pos..self.pos + 1).unwrap();
-        self.pos += 1;
+        let mut data = self.read_bytes(1)?;
         data.read_i8()
     }
 
     /// read signed 16 bit integer
     pub fn read_i16(&mut self) -> std::io::Result<i16> {
-        let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
-        self.pos += 2;
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(2)?;
+        match endianness {
             Endian::Big => data.read_i16::<BigEndian>(),
             Endian::Little => data.read_i16::<LittleEndian>(),
         }
@@ -141,9 +165,9 @@ impl BinaryReader {
 
     /// read signed 32 bit integer
     pub fn read_i32(&mut self) -> std::io::Result<i32> {
-        let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
-        self.pos += 4;
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(4)?;
+        match endianness {
             Endian::Big => data.read_i32::<BigEndian>(),
             Endian::Little => data.read_i32::<LittleEndian>(),
         }
@@ -151,9 +175,9 @@ impl BinaryReader {
 
     /// read signed 64 bit integer
     pub fn read_i64(&mut self) -> std::io::Result<i64> {
-        let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
-        self.pos += 8;
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(8)?;
+        match endianness {
             Endian::Big => data.read_i64::<BigEndian>(),
             Endian::Little => data.read_i64::<LittleEndian>(),
         }
@@ -161,10 +185,9 @@ impl BinaryReader {
 
     /// read 32 bit float
     pub fn read_f32(&mut self) -> std::io::Result<f32> {
-        let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
-        self.pos += 4;
-
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(4)?;
+        match endianness {
             Endian::Big => data.read_f32::<BigEndian>(),
             Endian::Little => data.read_f32::<LittleEndian>(),
         }
@@ -172,10 +195,9 @@ impl BinaryReader {
 
     /// read 64 bit float
     pub fn read_f64(&mut self) -> std::io::Result<f64> {
-        let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
-        self.pos += 8;
-
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(8)?;
+        match endianness {
             Endian::Big => data.read_f64::<BigEndian>(),
             Endian::Little => data.read_f64::<LittleEndian>(),
         }
@@ -183,16 +205,15 @@ impl BinaryReader {
 
     /// read unsigned 8 bit integer
     pub fn read_u8(&mut self) -> std::io::Result<u8> {
-        let mut data = self.data.get(self.pos..self.pos + 1).unwrap();
-        self.pos += 1;
+        let mut data = self.read_bytes(1)?;
         data.read_u8()
     }
 
     /// read unsigned 16 bit integer
     pub fn read_u16(&mut self) -> std::io::Result<u16> {
-        let mut data = self.data.get(self.pos..self.pos + 2).unwrap();
-        self.pos += 2;
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(2)?;
+        match endianness {
             Endian::Big => data.read_u16::<BigEndian>(),
             Endian::Little => data.read_u16::<LittleEndian>(),
         }
@@ -200,9 +221,9 @@ impl BinaryReader {
 
     /// read unsigned 32 bit integer
     pub fn read_u32(&mut self) -> std::io::Result<u32> {
-        let mut data = self.data.get(self.pos..self.pos + 4).unwrap();
-        self.pos += 4;
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(4)?;
+        match endianness {
             Endian::Big => data.read_u32::<BigEndian>(),
             Endian::Little => data.read_u32::<LittleEndian>(),
         }
@@ -210,9 +231,9 @@ impl BinaryReader {
 
     /// read unsigned 64 bit integer
     pub fn read_u64(&mut self) -> std::io::Result<u64> {
-        let mut data = self.data.get(self.pos..self.pos + 8).unwrap();
-        self.pos += 8;
-        match self.endian {
+        let endianness = self.endian;
+        let mut data = self.read_bytes(8)?;
+        match endianness {
             Endian::Big => data.read_u64::<BigEndian>(),
             Endian::Little => data.read_u64::<LittleEndian>(),
         }
