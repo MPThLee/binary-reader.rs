@@ -1,10 +1,10 @@
-name: coverage
+name: Coverage test and upload to Codecov/Coveralls
 
 on: [push, pull_request]
 
 jobs:
   test:
-    name: coverage
+    name: Coverage test
     runs-on: ubuntu-latest
     container:
       image: xd009642/tarpaulin:develop-nightly
@@ -15,15 +15,10 @@ jobs:
 
       - name: Generate code coverage
         run: |
-          cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 240 --out Xml
+          cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 240 --coveralls ${{ secrets.COVERALLS_TOKEN }} --out Xml 
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v1
         with:
           token: ${{secrets.CODECOV_TOKEN}} # not required for public repos
           fail_ci_if_error: true
-      # - name: Coveralls upload
-      #   uses: coverallsapp/github-action@master
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     parallel: true
