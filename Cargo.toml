@@ -1,6 +1,6 @@
 [package]
 name = "binary-reader"
-version = "0.3.1"
+version = "0.4.0"
 authors = ["MPThLee <mpthlee@gmail.com>"]
 description = "A binary reader for rust-lang. for step by step."
 readme = "README.md"
@@ -9,7 +9,6 @@ repository = "https://github.com/MPThLee/binary-reader.rs"
 publish = true
 
 # Rust version.
-rust="1.41.1"
 edition="2018"
 
 # Abort instead of panic, Since it doesn't need panic in this library.
@@ -18,10 +17,6 @@ panic = "abort"
 
 [profile.release]
 panic = "abort"
-
-[badges]
-travis-ci = { repository = "MPThLee/binary-reader.rs" }
-coveralls = { repository = "MPThLee/binary-reader.rs" }
 
 [dependencies]
 byteorder = "^1.4"
