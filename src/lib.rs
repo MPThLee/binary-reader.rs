@@ -48,19 +48,6 @@ impl BinaryReader {
         }
     }
 
-    #[doc(hidden)]
-    fn read_bytes(&mut self, bytes: usize) -> std::io::Result<&[u8]> {
-        let data = self.data.get(self.pos..self.pos + bytes).ok_or_else(|| {
-            Error::new(
-                ErrorKind::UnexpectedEof,
-                format!("failed to read {} bytes from offset {}", bytes, self.pos),
-            )
-        })?;
-        self.pos += bytes;
-
-        Ok(data)
-    }
-
     /// Initialize BinaryReader from u8 slice.
     pub fn from_u8(get: &[u8]) -> BinaryReader {
         let mut a = BinaryReader::initialize();
@@ -105,11 +92,25 @@ impl BinaryReader {
         self.pos = (self.pos + size - 1) / size * size
     }
 
-    /// Read length size bytes.
+    /// Read provided length size bytes.
     pub fn read(&mut self, size: usize) -> Option<&[u8]> {
         let data = self.data.get(self.pos..self.pos + size);
         self.pos += size;
         data
+    }
+
+    /// Read provided length size bytes.
+    /// Similar to `read` but this returns `std::io::Result<&[u8]>` instead of `Option`.
+    pub fn read_bytes(&mut self, bytes: usize) -> std::io::Result<&[u8]> {
+        let data = self.data.get(self.pos..self.pos + bytes).ok_or_else(|| {
+            Error::new(
+                ErrorKind::UnexpectedEof,
+                format!("failed to read {} bytes from offset {}", bytes, self.pos),
+            )
+        })?;
+        self.pos += bytes;
+
+        Ok(data)
     }
 
     /// Read cstr.
