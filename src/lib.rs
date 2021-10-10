@@ -47,7 +47,7 @@ pub struct BinaryReader {
     pub pos: usize,
     /// The length of the buffer.
     pub length: usize,
-    /// The endian of the buffer for read numerics.
+    /// The endian of the buffer.
     pub endian: Endian,
 }
 
