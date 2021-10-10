@@ -1,0 +1,42 @@
+{
+  "projectName": "binary-reader.rs",
+  "projectOwner": "MPThLee",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "MPThLee",
+      "name": "MPThLee",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26970092?v=4",
+      "profile": "https://github.com/MPThLee",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "evayde",
+      "name": "Enrico Gruner",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25255815?v=4",
+      "profile": "https://github.com/evayde",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bugadani",
+      "name": "Dániel Buga",
+      "avatar_url": "https://avatars.githubusercontent.com/u/977627?v=4",
+      "profile": "https://bugadani.github.io/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

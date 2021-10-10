@@ -10,6 +10,10 @@ binary-reader
 [![Codecov Coverage Status][CodecovBadge]][Codecov]
 [![Coveralls Coverage Status][CoverallsBadge]][Coveralls]
 
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 A binary reader for rust-lang. for step by step.
 It's a minimal `byteorder` wrapper for read bytes.
 
@@ -25,11 +29,26 @@ TODO
  * More tests and examples
 
 
+
 Contributors
 ------------
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/MPThLee"><img src="https://avatars.githubusercontent.com/u/26970092?v=4?s=100" width="100px;" alt=""/><br /><sub><b>MPThLee</b></sub></a><br /><a href="https://github.com/MPThLee/binary-reader.rs/commits?author=MPThLee" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/evayde"><img src="https://avatars.githubusercontent.com/u/25255815?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Enrico Gruner</b></sub></a><br /><a href="https://github.com/MPThLee/binary-reader.rs/commits?author=evayde" title="Code">💻</a></td>
+    <td align="center"><a href="https://bugadani.github.io/"><img src="https://avatars.githubusercontent.com/u/977627?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dániel Buga</b></sub></a><br /><a href="https://github.com/MPThLee/binary-reader.rs/commits?author=bugadani" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 LICENSE
 -------
