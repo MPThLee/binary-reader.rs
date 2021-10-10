@@ -1,3 +1,5 @@
+extern crate binary_reader;
+
 use std::fs::File;
 
 use binary_reader::BinaryReader;

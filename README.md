@@ -22,7 +22,6 @@ See [examples](examples/) folder.
 
 TODO
 ----
- * Maybe support `Native-Endian`?
  * Reference Document
  * Code Optimize
  * More tests and examples

@@ -1,4 +1,5 @@
 //! A Binary reader for step by step.
+//! It's a minimal [`byteorder`] wrapper for read bytes.
 //!
 //! # Example
 //!
@@ -19,21 +20,34 @@
 
 extern crate byteorder;
 
-use byteorder::{BigEndian, LittleEndian, ReadBytesExt};
+use byteorder::{BigEndian, LittleEndian, NativeEndian, ReadBytesExt};
 use std::io::{prelude::*, Error, ErrorKind};
 
 /// An Enums for set Endian.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Endian {
+    /// See [`byteorder::BigEndian`].
     Big,
+    /// See [`byteorder::LittleEndian`].
     Little,
-    //Native
+    /// See [`byteorder::NativeEndian`].
+    /// This endian varies with the platform.
+    Native,
+    /// See [`byteorder::NetworkEndian`].
+    /// This endian is alias of [`BigEndian`](byteorder::BigEndian).
+    Network,
 }
 
+/// Binary reader.
+#[derive(Debug, Clone)]
 pub struct BinaryReader {
+    /// The buffer data.
     pub data: Vec<u8>,
+    /// The current position.
     pub pos: usize,
+    /// The length of the buffer.
     pub length: usize,
+    /// The endian of the buffer for read numerics.
     pub endian: Endian,
 }
 
@@ -48,7 +62,7 @@ impl BinaryReader {
         }
     }
 
-    /// Initialize BinaryReader from u8 slice.
+    /// Initialize BinaryReader from [`u8`] slice.
     pub fn from_u8(get: &[u8]) -> BinaryReader {
         let mut a = BinaryReader::initialize();
         a.data = get.to_vec();
@@ -56,8 +70,8 @@ impl BinaryReader {
         a
     }
 
-    #[allow(clippy::ptr_arg)]
-    /// Initialize BinaryReader from u8 Vector.
+    #[allow(clippy::ptr_arg)] // leave this for bypass clippy warning.
+    /// Initialize BinaryReader from [`u8`] [`Vector`](std::vec::Vec).
     pub fn from_vec(vec: &Vec<u8>) -> BinaryReader {
         let mut a = BinaryReader::initialize();
         a.data = vec.to_vec();
@@ -65,7 +79,7 @@ impl BinaryReader {
         a
     }
 
-    /// Initialize BinaryReader from `std::fs::File`.
+    /// Initialize BinaryReader from [`std::fs::File`].
     pub fn from_file(file: &mut std::fs::File) -> BinaryReader {
         let mut a = BinaryReader::initialize();
         let mut v: Vec<u8> = Vec::new();
@@ -100,7 +114,7 @@ impl BinaryReader {
     }
 
     /// Read provided length size bytes.
-    /// Similar to `read` but this returns `std::io::Result<&[u8]>` instead of `Option`.
+    /// Similar to [`BinaryReader::read`] but this returns [`std::io::Result`] instead of [`Option`].
     pub fn read_bytes(&mut self, bytes: usize) -> std::io::Result<&[u8]> {
         let data = self.data.get(self.pos..self.pos + bytes).ok_or_else(|| {
             Error::new(
@@ -161,8 +175,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(2)?;
         match endianness {
-            Endian::Big => data.read_i16::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_i16::<BigEndian>(),
             Endian::Little => data.read_i16::<LittleEndian>(),
+            Endian::Native => data.read_i16::<NativeEndian>(),
         }
     }
 
@@ -171,8 +186,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(4)?;
         match endianness {
-            Endian::Big => data.read_i32::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_i32::<BigEndian>(),
             Endian::Little => data.read_i32::<LittleEndian>(),
+            Endian::Native => data.read_i32::<NativeEndian>(),
         }
     }
 
@@ -181,8 +197,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(8)?;
         match endianness {
-            Endian::Big => data.read_i64::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_i64::<BigEndian>(),
             Endian::Little => data.read_i64::<LittleEndian>(),
+            Endian::Native => data.read_i64::<NativeEndian>(),
         }
     }
 
@@ -191,8 +208,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(4)?;
         match endianness {
-            Endian::Big => data.read_f32::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_f32::<BigEndian>(),
             Endian::Little => data.read_f32::<LittleEndian>(),
+            Endian::Native => data.read_f32::<NativeEndian>(),
         }
     }
 
@@ -201,8 +219,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(8)?;
         match endianness {
-            Endian::Big => data.read_f64::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_f64::<BigEndian>(),
             Endian::Little => data.read_f64::<LittleEndian>(),
+            Endian::Native => data.read_f64::<NativeEndian>(),
         }
     }
 
@@ -217,8 +236,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(2)?;
         match endianness {
-            Endian::Big => data.read_u16::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_u16::<BigEndian>(),
             Endian::Little => data.read_u16::<LittleEndian>(),
+            Endian::Native => data.read_u16::<NativeEndian>(),
         }
     }
 
@@ -227,8 +247,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(4)?;
         match endianness {
-            Endian::Big => data.read_u32::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_u32::<BigEndian>(),
             Endian::Little => data.read_u32::<LittleEndian>(),
+            Endian::Native => data.read_u32::<NativeEndian>(),
         }
     }
 
@@ -237,8 +258,9 @@ impl BinaryReader {
         let endianness = self.endian;
         let mut data = self.read_bytes(8)?;
         match endianness {
-            Endian::Big => data.read_u64::<BigEndian>(),
+            Endian::Big | Endian::Network => data.read_u64::<BigEndian>(),
             Endian::Little => data.read_u64::<LittleEndian>(),
+            Endian::Native => data.read_u64::<NativeEndian>(),
         }
     }
 }
