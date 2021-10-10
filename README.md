@@ -5,13 +5,12 @@ binary-reader
 [![Documentation][DocsRsBadge]][DocsRs]
 [![Dependency Status][DepsRsBadge]][DepsRs]
 
-[![FOSSA Status][FOSSAShieldBadge]][FOSSAShield]
 [![Continuous Integration][GithubActionsBadge]][GithubActions]
+[![FOSSA Status][FOSSAShieldBadge]][FOSSAShield]
 [![Codecov Coverage Status][CodecovBadge]][Codecov]
 [![Coveralls Coverage Status][CoverallsBadge]][Coveralls]
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A binary reader for rust-lang. for step by step.
@@ -27,8 +26,6 @@ TODO
  * Reference Document
  * Code Optimize
  * More tests and examples
-
-
 
 Contributors
 ------------

@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## 0.4.0 (Current)
+# 0.4.1 (Current)
+ - Documentation update.
+ - Expose `read_bytes` method.
+ - Add small example about file.
+
+## 0.4.0
  - Don't panic when there is not enough data [#2](https://github.com/MPThLee/binary-reader.rs/pull/2)
  
 ## 0.3.1
