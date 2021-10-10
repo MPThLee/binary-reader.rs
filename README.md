@@ -4,6 +4,7 @@ binary-reader
 [![MIT License][LicenseBadge]][License]
 [![Documentation][DocsRsBadge]][DocsRs]
 [![Dependency Status][DepsRsBadge]][DepsRs]
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs?ref=badge_shield)
 
 [![Continuous Integration][GithubActionsBadge]][GithubActions]
 [![Codecov Coverage Status][CodecovBadge]][Codecov]
@@ -45,3 +46,6 @@ TODO
 
 [Coveralls]: https://coveralls.io/github/MPThLee/binary-reader.rs?branch=master
 [CoverallsBadge]: https://coveralls.io/repos/github/MPThLee/binary-reader.rs/badge.svg?branch=master
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs?ref=badge_large)
