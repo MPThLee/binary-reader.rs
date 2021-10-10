@@ -6,7 +6,7 @@ binary-reader
 [![Dependency Status][DepsRsBadge]][DepsRs]
 
 [![FOSSA Status][FOSSAShieldBadge]][FOSSAShield]
-[![Continuous Integration][GithubActionsShield]][GithubActions]
+[![Continuous Integration][GithubActionsBadge]][GithubActions]
 [![Codecov Coverage Status][CodecovBadge]][Codecov]
 [![Coveralls Coverage Status][CoverallsBadge]][Coveralls]
 
@@ -19,7 +19,7 @@ It's a minimal `byteorder` wrapper for read bytes.
 
 Example
 -------
-See [examples/](./examples/README.md) folder.
+See [examples](examples/) folder.
 
 TODO
 ----
