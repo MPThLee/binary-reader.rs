@@ -5,8 +5,8 @@ binary-reader
 [![Documentation][DocsRsBadge]][DocsRs]
 [![Dependency Status][DepsRsBadge]][DepsRs]
 
-[![FOSSA Status][FOSSABadge]][FOSSA][![FOSSA Status]()]()
-[![Continuous Integration][GithubActionsBadge]][GithubActions]
+[![FOSSA Status][FOSSAShieldBadge]][FOSSAShield]
+[![Continuous Integration][GithubActionsShield]][GithubActions]
 [![Codecov Coverage Status][CodecovBadge]][Codecov]
 [![Coveralls Coverage Status][CoverallsBadge]][Coveralls]
 
@@ -30,6 +30,7 @@ Contributors
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
 LICENSE
 -------
 [The MIT License (MIT)](LICENSE.md)
