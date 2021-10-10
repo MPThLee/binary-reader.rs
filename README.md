@@ -5,24 +5,31 @@ binary-reader
 [![Documentation][DocsRsBadge]][DocsRs]
 [![Dependency Status][DepsRsBadge]][DepsRs]
 
+[![FOSSA Status][FOSSABadge]][FOSSA][![FOSSA Status]()]()
 [![Continuous Integration][GithubActionsBadge]][GithubActions]
 [![Codecov Coverage Status][CodecovBadge]][Codecov]
 [![Coveralls Coverage Status][CoverallsBadge]][Coveralls]
 
 A binary reader for rust-lang. for step by step.
+It's a minimal `byteorder` wrapper for read bytes.
 
 Example
 -------
-TODO...
+See [examples/](./examples/README.md) folder.
 
 TODO
 ----
- * Add Example(s)
  * Maybe support `Native-Endian`?
  * Reference Document
  * Code Optimize
- * Support `double`
- * More tests
+ * More tests and examples
+
+LICENSE
+-------
+Copyright (c) 2017-present MPThLee, and all other contributors.
+
+[![FOSSA Status][FOSSALargeBadge]][FOSSALarge]
+
 
 [CratesIO]: https://crates.io/crates/binary-reader
 [CratesIOBadge]: https://img.shields.io/crates/v/binary-reader.svg
@@ -35,6 +42,11 @@ TODO
 
 [DepsRs]: https://deps.rs/repo/github/mpthlee/binary-reader.rs
 [DepsRsBadge]: https://deps.rs/repo/github/mpthlee/binary-reader.rs/status.svg
+
+[FOSSAShield]: https://app.fossa.com/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs?ref=badge_shield
+[FOSSAShieldBadge]: https://app.fossa.com/api/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs.svg?type=shield
+[FOSSALarge]: https://app.fossa.com/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs?ref=badge_large
+[FOSSALargeBadge]: https://app.fossa.com/api/projects/git%2Bgithub.com%2FMPThLee%2Fbinary-reader.rs.svg?type=large
 
 [GithubActions]: https://github.com/MPThLee/binary-reader.rs/actions/workflows/ci.yml
 [GithubActionsBadge]: https://github.com/MPThLee/binary-reader.rs/actions/workflows/ci.yml/badge.svg
