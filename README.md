@@ -24,9 +24,15 @@ TODO
  * Code Optimize
  * More tests and examples
 
+
+Contributors
+------------
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 LICENSE
 -------
-Copyright (c) 2017-present MPThLee, and all other contributors.
+[The MIT License (MIT)](LICENSE.md)
 
 [![FOSSA Status][FOSSALargeBadge]][FOSSALarge]
 
