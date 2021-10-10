@@ -7,9 +7,10 @@ fn is_rust_working_well() {
 
 #[test]
 fn read_cstr() {
+    #[rustfmt::skip]
     let vector: Vec<u8> = vec![
-        0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00, 0x6F,
-        0x2F, 0x00,
+        0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00,
+        0x6F, 0x2F, 0x00,
     ];
     // "Hello, World" + null + "o/"
     let mut bin = BinaryReader::from_vec(&vector);
@@ -22,16 +23,32 @@ fn read_cstr() {
 fn read_integer_signed() {
     #[rustfmt::skip]
     let vector: Vec<u8> = vec![
+        0xED, 
+        0xF4, 0x89, 
+        0xEA, 0xFA, 0x4B, 0x57,
+        0xFA, 0x72, 0xEA, 0x1E, 0x89, 0xD8, 0x00, 0x00
+    ];
+    let mut bin = BinaryReader::from_vec(&vector);
+    assert_eq!(-1_9, bin.read_i8().unwrap());
+    assert_eq!(-2_935, bin.read_i16().unwrap());
+    assert_eq!(-3_52695465, bin.read_i32().unwrap());
+    assert_eq!(-4_00000000000000000, bin.read_i64().unwrap());
+}
+
+#[test]
+fn read_integer_unsigned() {
+    #[rustfmt::skip]
+    let vector: Vec<u8> = vec![
         0x13, 
         0x0B, 0x77, 
         0x15, 0x05, 0xB4, 0xA9,
         0x05, 0x8D, 0x15, 0xE1, 0x76, 0x28, 0x00, 0x00
     ];
     let mut bin = BinaryReader::from_vec(&vector);
-    assert_eq!(1_9, bin.read_i8().unwrap());
-    assert_eq!(2_935, bin.read_i16().unwrap());
-    assert_eq!(3_52695465, bin.read_i32().unwrap());
-    assert_eq!(4_00000000000000000, bin.read_i64().unwrap());
+    assert_eq!(1_9, bin.read_u8().unwrap());
+    assert_eq!(2_935, bin.read_u16().unwrap());
+    assert_eq!(3_52695465, bin.read_u32().unwrap());
+    assert_eq!(4_00000000000000000, bin.read_u64().unwrap());
 }
 
 #[test]
