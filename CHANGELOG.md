@@ -1,10 +1,10 @@
 # CHANGELOG
 
-## 0.4.2
+## 0.4.2 (Current)
  - Support `Native` and `Network` endian.
  - Documentation update.
 
-## 0.4.1 (Current)
+## 0.4.1
  - Documentation update.
  - Expose `read_bytes` method.
  - Add small example about file.
