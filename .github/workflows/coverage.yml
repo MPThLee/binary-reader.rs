@@ -15,7 +15,7 @@ jobs:
 
       - name: Generate code coverage
         run: |
-          cargo +nightly tarpaulin --verbose --all-features --workspace --tests --examples --no-fail-fast --timeout 240 --coveralls ${{ secrets.COVERALLS_TOKEN }} --out Xml 
+          cargo +nightly tarpaulin --verbose --all-features --workspace --tests --examples --doc --no-fail-fast --timeout 240 --coveralls ${{ secrets.COVERALLS_TOKEN }} --out Xml 
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v1
