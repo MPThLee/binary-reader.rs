@@ -15,10 +15,14 @@ jobs:
 
       - name: Generate code coverage
         run: |
-          cargo +nightly tarpaulin --verbose --all-features --workspace --tests --examples --doc --no-fail-fast --exclude-files examples/* --timeout 240 --coveralls ${{ secrets.COVERALLS_TOKEN }} --out Xml 
+          cargo +nightly tarpaulin --verbose --all-features --workspace - --no-fail-fast --timeout 240 --coveralls ${{ secrets.COVERALLS_TOKEN }} --out Xml 
+
+      - name: Print cobertura.xml for debug purpose.
+        run: cat cobertura.xml
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v2.1.0
         with:
           token: ${{secrets.CODECOV_TOKEN}} # not required for public repos
           fail_ci_if_error: true
+          verbose: true
