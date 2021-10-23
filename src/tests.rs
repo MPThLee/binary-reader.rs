@@ -15,7 +15,7 @@ fn is_rust_working_well() {
 }
 
 macro_rules! read_max_number_test_macro {
-    ($name:ident, $read:ident, $write:ident, $max:expr, $min:expr) => {
+    ($name:ident, $bytes:expr, $read:ident, $write:ident, $max:expr, $min:expr) => {
         mod $name {
             use crate::{BinaryReader, Endian};
             use byteorder::{BigEndian, ByteOrder, LittleEndian, NativeEndian};
@@ -23,7 +23,7 @@ macro_rules! read_max_number_test_macro {
             fn big() {
                 let mut buf = [0; 32];
                 BigEndian::$write(&mut buf, $max);
-                BigEndian::$write(&mut buf, $min);
+                BigEndian::$write(&mut buf[$bytes..], $min);
 
                 let mut r = BinaryReader::from_u8(&mut buf);
                 r.set_endian(Endian::Big);
@@ -33,9 +33,9 @@ macro_rules! read_max_number_test_macro {
 
             #[test]
             fn little() {
-                let mut buf = [0; 16];
+                let mut buf = [0; 32];
                 LittleEndian::$write(&mut buf, $max);
-                LittleEndian::$write(&mut buf, $min);
+                LittleEndian::$write(&mut buf[$bytes..], $min);
 
                 let mut r = BinaryReader::from_u8(&mut buf);
                 r.set_endian(Endian::Little);
@@ -45,9 +45,9 @@ macro_rules! read_max_number_test_macro {
 
             #[test]
             fn native() {
-                let mut buf = [0; 16];
+                let mut buf = [0; 32];
                 NativeEndian::$write(&mut buf, $max);
-                NativeEndian::$write(&mut buf, $min);
+                NativeEndian::$write(&mut buf[$bytes..], $min);
 
                 let mut r = BinaryReader::from_u8(&mut buf);
                 r.set_endian(Endian::Native);
@@ -60,11 +60,33 @@ macro_rules! read_max_number_test_macro {
 }
 
 // unsigned integer
-read_max_number_test_macro!(u16, read_u16, write_u16, ::std::u16::MAX, ::std::u16::MIN);
-read_max_number_test_macro!(u32, read_u32, write_u32, ::std::u32::MAX, ::std::u32::MIN);
-read_max_number_test_macro!(u64, read_u64, write_u64, ::std::u64::MAX, ::std::u64::MIN);
+read_max_number_test_macro!(
+    u16,
+    2,
+    read_u16,
+    write_u16,
+    ::std::u16::MAX,
+    ::std::u16::MIN
+);
+read_max_number_test_macro!(
+    u32,
+    4,
+    read_u32,
+    write_u32,
+    ::std::u32::MAX,
+    ::std::u32::MIN
+);
+read_max_number_test_macro!(
+    u64,
+    8,
+    read_u64,
+    write_u64,
+    ::std::u64::MAX,
+    ::std::u64::MIN
+);
 read_max_number_test_macro!(
     u128,
+    16,
     read_u128,
     write_u128,
     ::std::u128::MAX,
@@ -72,11 +94,33 @@ read_max_number_test_macro!(
 );
 
 // singed integer
-read_max_number_test_macro!(i16, read_i16, write_i16, ::std::i16::MAX, ::std::i16::MIN);
-read_max_number_test_macro!(i32, read_i32, write_i32, ::std::i32::MAX, ::std::i32::MIN);
-read_max_number_test_macro!(i64, read_i64, write_i64, ::std::i64::MAX, ::std::i64::MIN);
+read_max_number_test_macro!(
+    i16,
+    2,
+    read_i16,
+    write_i16,
+    ::std::i16::MAX,
+    ::std::i16::MIN
+);
+read_max_number_test_macro!(
+    i32,
+    4,
+    read_i32,
+    write_i32,
+    ::std::i32::MAX,
+    ::std::i32::MIN
+);
+read_max_number_test_macro!(
+    i64,
+    8,
+    read_i64,
+    write_i64,
+    ::std::i64::MAX,
+    ::std::i64::MIN
+);
 read_max_number_test_macro!(
     i128,
+    16,
     read_i128,
     write_i128,
     ::std::i128::MAX,
@@ -84,10 +128,11 @@ read_max_number_test_macro!(
 );
 
 // 24/48 bit unsinged/singed integers.
-read_max_number_test_macro!(u24, read_u24, write_u24, crate::tests::U24_MAX, 0);
-read_max_number_test_macro!(u48, read_u48, write_u48, crate::tests::U48_MAX, 0);
+read_max_number_test_macro!(u24, 3, read_u24, write_u24, crate::tests::U24_MAX, 0);
+read_max_number_test_macro!(u48, 6, read_u48, write_u48, crate::tests::U48_MAX, 0);
 read_max_number_test_macro!(
     i24,
+    3,
     read_i24,
     write_i24,
     crate::tests::I24_MAX,
@@ -95,6 +140,7 @@ read_max_number_test_macro!(
 );
 read_max_number_test_macro!(
     i48,
+    6,
     read_i48,
     write_i48,
     crate::tests::I48_MAX,
@@ -102,8 +148,22 @@ read_max_number_test_macro!(
 );
 
 // Float
-read_max_number_test_macro!(f32, read_f32, write_f32, ::std::f32::MAX, ::std::f32::MIN);
-read_max_number_test_macro!(f64, read_f64, write_f64, ::std::f64::MAX, ::std::f64::MIN);
+read_max_number_test_macro!(
+    f32,
+    4,
+    read_f32,
+    write_f32,
+    ::std::f32::MAX,
+    ::std::f32::MIN
+);
+read_max_number_test_macro!(
+    f64,
+    8,
+    read_f64,
+    write_f64,
+    ::std::f64::MAX,
+    ::std::f64::MIN
+);
 
 #[test]
 fn read_cstr() {
