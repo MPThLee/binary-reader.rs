@@ -6,76 +6,104 @@ pub const I24_MAX: i32 = 8_388_607;
 pub const U48_MAX: u64 = 281_474_976_710_655;
 pub const I48_MAX: i64 = 140_737_488_355_327;
 
+pub const I24_MIN: i32 = -8_388_608;
+pub const I48_MIN: i64 = -140_737_488_355_328;
 
 #[test]
 fn is_rust_working_well() {
     assert_eq!(2 + 2, 4);
 }
 
-
 macro_rules! read_max_number_test_macro {
-    ($name:ident, $read:ident, $write:ident, $max:expr) => {
+    ($name:ident, $read:ident, $write:ident, $max:expr, $min:expr) => {
         mod $name {
-            use byteorder::{BigEndian, LittleEndian, NativeEndian, ByteOrder};
-            use crate::{Endian, BinaryReader};
+            use crate::{BinaryReader, Endian};
+            use byteorder::{BigEndian, ByteOrder, LittleEndian, NativeEndian};
             #[test]
             fn big() {
-                let mut buf = [0; 16];
+                let mut buf = [0; 32];
                 BigEndian::$write(&mut buf, $max);
-                
+                BigEndian::$write(&mut buf, $min);
+
                 let mut r = BinaryReader::from_u8(&mut buf);
                 r.set_endian(Endian::Big);
                 assert_eq!(r.$read().unwrap(), $max);
+                assert_eq!(r.$read().unwrap(), $min);
             }
 
             #[test]
             fn little() {
                 let mut buf = [0; 16];
                 LittleEndian::$write(&mut buf, $max);
-                
+                LittleEndian::$write(&mut buf, $min);
+
                 let mut r = BinaryReader::from_u8(&mut buf);
                 r.set_endian(Endian::Little);
                 assert_eq!(r.$read().unwrap(), $max);
+                assert_eq!(r.$read().unwrap(), $min);
             }
 
             #[test]
             fn native() {
                 let mut buf = [0; 16];
                 NativeEndian::$write(&mut buf, $max);
-                
+                NativeEndian::$write(&mut buf, $min);
+
                 let mut r = BinaryReader::from_u8(&mut buf);
                 r.set_endian(Endian::Native);
                 assert_eq!(r.$read().unwrap(), $max);
+                assert_eq!(r.$read().unwrap(), $min);
             }
         }
     };
-    () => {
-        
-    };
+    () => {};
 }
 
 // unsigned integer
-read_max_number_test_macro!(u16, read_u16, write_u16, u16::MAX as u16);
-read_max_number_test_macro!(u32, read_u32, write_u32, u32::MAX as u32);
-read_max_number_test_macro!(u64, read_u64, write_u64, u64::MAX as u64);
-read_max_number_test_macro!(u128, read_u128, write_u128, u128::MAX as u128);
+read_max_number_test_macro!(u16, read_u16, write_u16, ::std::u16::MAX, ::std::u16::MIN);
+read_max_number_test_macro!(u32, read_u32, write_u32, ::std::u32::MAX, ::std::u32::MIN);
+read_max_number_test_macro!(u64, read_u64, write_u64, ::std::u64::MAX, ::std::u64::MIN);
+read_max_number_test_macro!(
+    u128,
+    read_u128,
+    write_u128,
+    ::std::u128::MAX,
+    ::std::u128::MIN
+);
 
 // singed integer
-read_max_number_test_macro!(i16, read_i16, write_i16, i16::MAX as i16);
-read_max_number_test_macro!(i32, read_i32, write_i32, i32::MAX as i32);
-read_max_number_test_macro!(i64, read_i64, write_i64, i64::MAX as i64);
-read_max_number_test_macro!(i128, read_i128, write_i128, i128::MAX as i128);
+read_max_number_test_macro!(i16, read_i16, write_i16, ::std::i16::MAX, ::std::i16::MIN);
+read_max_number_test_macro!(i32, read_i32, write_i32, ::std::i32::MAX, ::std::i32::MIN);
+read_max_number_test_macro!(i64, read_i64, write_i64, ::std::i64::MAX, ::std::i64::MIN);
+read_max_number_test_macro!(
+    i128,
+    read_i128,
+    write_i128,
+    ::std::i128::MAX,
+    ::std::i128::MIN
+);
 
 // 24/48 bit unsinged/singed integers.
-read_max_number_test_macro!(u24, read_u24, write_u24, crate::tests::U24_MAX as u32);
-read_max_number_test_macro!(u48, read_u48, write_u48, crate::tests::U48_MAX as u64);
-read_max_number_test_macro!(i24, read_i24, write_i24, crate::tests::I24_MAX as i32);
-read_max_number_test_macro!(i48, read_i48, write_i48, crate::tests::I48_MAX as i64);
+read_max_number_test_macro!(u24, read_u24, write_u24, crate::tests::U24_MAX, 0);
+read_max_number_test_macro!(u48, read_u48, write_u48, crate::tests::U48_MAX, 0);
+read_max_number_test_macro!(
+    i24,
+    read_i24,
+    write_i24,
+    crate::tests::I24_MAX,
+    crate::tests::I24_MIN
+);
+read_max_number_test_macro!(
+    i48,
+    read_i48,
+    write_i48,
+    crate::tests::I48_MAX,
+    crate::tests::I48_MIN
+);
 
 // Float
-read_max_number_test_macro!(f32, read_f32, write_f32, f32::MAX as f32);
-read_max_number_test_macro!(f64, read_f64, write_f64, f64::MAX as f64);
-
+read_max_number_test_macro!(f32, read_f32, write_f32, ::std::f32::MAX, ::std::f32::MIN);
+read_max_number_test_macro!(f64, read_f64, write_f64, ::std::f64::MAX, ::std::f64::MIN);
 
 #[test]
 fn read_cstr() {
@@ -96,22 +124,6 @@ fn read_8bit() {
     let mut bin = BinaryReader::from_u8(&[0xED, 0x13]);
     assert_eq!(-19, bin.read_i8().unwrap());
     assert_eq!(19, bin.read_u8().unwrap());
-}
-
-#[test]
-fn read_integer_signed() {
-    #[rustfmt::skip]
-    let vector: Vec<u8> = vec![
-        0xED, 
-        0xF4, 0x89, 
-        0xEA, 0xFA, 0x4B, 0x57,
-        0xFA, 0x72, 0xEA, 0x1E, 0x89, 0xD8, 0x00, 0x00
-    ];
-    let mut bin = BinaryReader::from_vec(&vector);
-    assert_eq!(-1_9, bin.read_i8().unwrap());
-    assert_eq!(-2_935, bin.read_i16().unwrap());
-    assert_eq!(-3_52695465, bin.read_i32().unwrap());
-    assert_eq!(-4_00000000000000000, bin.read_i64().unwrap());
 }
 
 #[test]
