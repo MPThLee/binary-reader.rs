@@ -8,7 +8,7 @@ binary-reader
 [![Continuous Integration][GithubActionsBadge]][GithubActions]
 [![FOSSA Status][FOSSAShieldBadge]][FOSSAShield]
 [![Codecov Coverage Status][CodecovBadge]][Codecov]
-[![Coveralls Coverage Status][CoverallsBadge]][Coveralls]
+<!--[![Coveralls Coverage Status][CoverallsBadge]][Coveralls]-->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -77,5 +77,6 @@ LICENSE
 [Codecov]: https://codecov.io/gh/MPThLee/binary-reader.rs
 [CodecovBadge]: https://codecov.io/gh/MPThLee/binary-reader.rs/branch/master/graph/badge.svg?token=uFbO1DSJvd
 
-[Coveralls]: https://coveralls.io/github/MPThLee/binary-reader.rs?branch=master
+<!--[Coveralls]: https://coveralls.io/github/MPThLee/binary-reader.rs?branch=master
 [CoverallsBadge]: https://coveralls.io/repos/github/MPThLee/binary-reader.rs/badge.svg?branch=master
+-->
