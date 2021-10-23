@@ -1,4 +1,4 @@
-name: Coverage test and upload to Codecov/Coveralls
+name: Coverage test
 
 on: [push, pull_request]
 
