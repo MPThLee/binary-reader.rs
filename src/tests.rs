@@ -1,6 +1,6 @@
 use super::*;
 
-// from https://github.com/BurntSushi/byteorder/blob/663358f9d29bBinaryReader, BinaryR tests::I24_MAX1a tests::U24_MAX25f2cb851/src/lib.rs#L2391-L2394
+// from https://github.com/BurntSushi/byteorder/blob/663358f9d29bddadc1a8e84290ec96925f2cb851/src/lib.rs#L2391-L2394
 pub const U24_MAX: u32 = 16_777_215;
 pub const I24_MAX: i32 = 8_388_607;
 pub const U48_MAX: u64 = 281_474_976_710_655;
