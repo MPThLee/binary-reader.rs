@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 0.4.2 (Current)
+## 0.4.3 (Current)
+ - Support 24, 48, 128 bit unsigned/signed integer.
+ - More tests with macro.
+
+## 0.4.2
  - Support `Native` and `Network` endian.
  - Documentation update.
 
