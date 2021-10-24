@@ -203,7 +203,7 @@ impl BinaryReader {
         }
     }
 
-    /// Read signed 24 bit integer. stored in i64.
+    /// Read signed 48 bit integer. stored in i64.
     pub fn read_i48(&mut self) -> std::io::Result<i64> {
         let endianness = self.endian;
         let mut data = self.read_bytes(6)?;
