@@ -38,6 +38,31 @@ pub enum Endian {
     Network,
 }
 
+#[doc(hidden)]
+/// This macro does a generate read functions.
+/// As there's too much duplicate code, I put it in a macro.
+macro_rules! read_number {
+    ($name:ident, $ty: ty, $bytes: expr, $doc: expr) => {
+        #[doc = $doc]
+        pub fn $name(&mut self) -> std::io::Result<$ty> {
+            let endianness = self.endian;
+            let mut data = self.read_bytes($bytes)?;
+            match endianness {
+                Endian::Big | Endian::Network => data.$name::<BigEndian>(),
+                Endian::Little => data.$name::<LittleEndian>(),
+                Endian::Native => data.$name::<NativeEndian>(),
+            }
+        }
+    };
+
+    ($name:ident, $ty: ty, $doc: expr) => {
+        #[doc = $doc]
+        pub fn $name(&mut self) -> std::io::Result<$ty> {
+            let mut data = self.read_bytes(1)?;
+            data.$name()
+        }
+    }
+}
 /// Binary reader.
 #[derive(Debug, Clone)]
 pub struct BinaryReader {
@@ -164,171 +189,27 @@ impl BinaryReader {
         }
     }
 
-    /// Read signed 8 bit integer
-    pub fn read_i8(&mut self) -> std::io::Result<i8> {
-        let mut data = self.read_bytes(1)?;
-        data.read_i8()
-    }
+    // Signed integers
+    read_number!(read_i8, i8, "Read signed 8 bit integer.");
+    read_number!(read_i16, i16, 2, "Read signed 16 bit integer.");
+    read_number!(read_i24, i32, 3, "Read signed 24 bit integer. Stored in i32.");
+    read_number!(read_i32, i32, 4, "Read signed 32 bit integer.");
+    read_number!(read_i48, i64, 6, "Read signed 48 bit integer. Stored in i64.");
+    read_number!(read_i64, i64, 8, "Read signed 64 bit integer.");
+    read_number!(read_i128, i128, 16, "Read signed 128 bit integer.");
 
-    /// Read signed 16 bit integer
-    pub fn read_i16(&mut self) -> std::io::Result<i16> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(2)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_i16::<BigEndian>(),
-            Endian::Little => data.read_i16::<LittleEndian>(),
-            Endian::Native => data.read_i16::<NativeEndian>(),
-        }
-    }
+    // Unsigned integers
+    read_number!(read_u8, u8, "Read unsigned 8 bit integer.");
+    read_number!(read_u16, u16, 2, "Read unsigned 16 bit integer.");
+    read_number!(read_u24, u32, 3, "Read unsigned 24 bit integer. Stored in u32.");
+    read_number!(read_u32, u32, 4, "Read unsigned 32 bit integer.");
+    read_number!(read_u48, u64, 6, "Read unsigned 48 bit integer. Stored in u64.");
+    read_number!(read_u64, u64, 8, "Read unsigned 64 bit integer.");
+    read_number!(read_u128, u128, 16, "Read unsigned 128 bit integer.");
 
-    /// Read signed 24 bit integer. stored in i32.
-    pub fn read_i24(&mut self) -> std::io::Result<i32> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(3)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_i24::<BigEndian>(),
-            Endian::Little => data.read_i24::<LittleEndian>(),
-            Endian::Native => data.read_i24::<NativeEndian>(),
-        }
-    }
-
-    /// Read signed 32 bit integer
-    pub fn read_i32(&mut self) -> std::io::Result<i32> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(4)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_i32::<BigEndian>(),
-            Endian::Little => data.read_i32::<LittleEndian>(),
-            Endian::Native => data.read_i32::<NativeEndian>(),
-        }
-    }
-
-    /// Read signed 48 bit integer. stored in i64.
-    pub fn read_i48(&mut self) -> std::io::Result<i64> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(6)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_i48::<BigEndian>(),
-            Endian::Little => data.read_i48::<LittleEndian>(),
-            Endian::Native => data.read_i48::<NativeEndian>(),
-        }
-    }
-
-    /// Read signed 64 bit integer
-    pub fn read_i64(&mut self) -> std::io::Result<i64> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(8)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_i64::<BigEndian>(),
-            Endian::Little => data.read_i64::<LittleEndian>(),
-            Endian::Native => data.read_i64::<NativeEndian>(),
-        }
-    }
-
-    /// Read signed 128 bit integer
-    pub fn read_i128(&mut self) -> std::io::Result<i128> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(16)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_i128::<BigEndian>(),
-            Endian::Little => data.read_i128::<LittleEndian>(),
-            Endian::Native => data.read_i128::<NativeEndian>(),
-        }
-    }
-
-    /// Read 32 bit float
-    pub fn read_f32(&mut self) -> std::io::Result<f32> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(4)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_f32::<BigEndian>(),
-            Endian::Little => data.read_f32::<LittleEndian>(),
-            Endian::Native => data.read_f32::<NativeEndian>(),
-        }
-    }
-
-    /// Read 64 bit float
-    pub fn read_f64(&mut self) -> std::io::Result<f64> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(8)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_f64::<BigEndian>(),
-            Endian::Little => data.read_f64::<LittleEndian>(),
-            Endian::Native => data.read_f64::<NativeEndian>(),
-        }
-    }
-
-    /// Read unsigned 8 bit integer
-    pub fn read_u8(&mut self) -> std::io::Result<u8> {
-        let mut data = self.read_bytes(1)?;
-        data.read_u8()
-    }
-
-    /// Read unsigned 16 bit integer
-    pub fn read_u16(&mut self) -> std::io::Result<u16> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(2)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_u16::<BigEndian>(),
-            Endian::Little => data.read_u16::<LittleEndian>(),
-            Endian::Native => data.read_u16::<NativeEndian>(),
-        }
-    }
-
-    /// Read unsigned 24 bit integer. stored in u32.
-    pub fn read_u24(&mut self) -> std::io::Result<u32> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(3)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_u24::<BigEndian>(),
-            Endian::Little => data.read_u24::<LittleEndian>(),
-            Endian::Native => data.read_u24::<NativeEndian>(),
-        }
-    }
-
-    /// Read unsigned 32 bit integer
-    pub fn read_u32(&mut self) -> std::io::Result<u32> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(4)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_u32::<BigEndian>(),
-            Endian::Little => data.read_u32::<LittleEndian>(),
-            Endian::Native => data.read_u32::<NativeEndian>(),
-        }
-    }
-
-    /// Read unsigned 48 bit integer. stored in u64.
-    pub fn read_u48(&mut self) -> std::io::Result<u64> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(6)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_u48::<BigEndian>(),
-            Endian::Little => data.read_u48::<LittleEndian>(),
-            Endian::Native => data.read_u48::<NativeEndian>(),
-        }
-    }
-
-    /// Read unsigned 64 bit integer
-    pub fn read_u64(&mut self) -> std::io::Result<u64> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(8)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_u64::<BigEndian>(),
-            Endian::Little => data.read_u64::<LittleEndian>(),
-            Endian::Native => data.read_u64::<NativeEndian>(),
-        }
-    }
-
-    /// Read unsigned 128 bit integer
-    pub fn read_u128(&mut self) -> std::io::Result<u128> {
-        let endianness = self.endian;
-        let mut data = self.read_bytes(16)?;
-        match endianness {
-            Endian::Big | Endian::Network => data.read_u128::<BigEndian>(),
-            Endian::Little => data.read_u128::<LittleEndian>(),
-            Endian::Native => data.read_u128::<NativeEndian>(),
-        }
-    }
+    // Floating point
+    read_number!(read_f32, f32, 4, "Read 32 bit floating point number.");
+    read_number!(read_f64, f64, 8, "Read 64 bit floating point number.");
 }
 
 #[cfg(test)]
