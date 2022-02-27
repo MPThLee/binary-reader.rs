@@ -61,7 +61,7 @@ macro_rules! read_number {
             let mut data = self.read_bytes(1)?;
             data.$name()
         }
-    }
+    };
 }
 /// Binary reader.
 #[derive(Debug, Clone)]
@@ -197,18 +197,38 @@ impl BinaryReader {
     // Signed integers
     read_number!(read_i8, i8, "Read signed 8 bit integer.");
     read_number!(read_i16, i16, 2, "Read signed 16 bit integer.");
-    read_number!(read_i24, i32, 3, "Read signed 24 bit integer. Stored in i32.");
+    read_number!(
+        read_i24,
+        i32,
+        3,
+        "Read signed 24 bit integer. Stored in i32."
+    );
     read_number!(read_i32, i32, 4, "Read signed 32 bit integer.");
-    read_number!(read_i48, i64, 6, "Read signed 48 bit integer. Stored in i64.");
+    read_number!(
+        read_i48,
+        i64,
+        6,
+        "Read signed 48 bit integer. Stored in i64."
+    );
     read_number!(read_i64, i64, 8, "Read signed 64 bit integer.");
     read_number!(read_i128, i128, 16, "Read signed 128 bit integer.");
 
     // Unsigned integers
     read_number!(read_u8, u8, "Read unsigned 8 bit integer.");
     read_number!(read_u16, u16, 2, "Read unsigned 16 bit integer.");
-    read_number!(read_u24, u32, 3, "Read unsigned 24 bit integer. Stored in u32.");
+    read_number!(
+        read_u24,
+        u32,
+        3,
+        "Read unsigned 24 bit integer. Stored in u32."
+    );
     read_number!(read_u32, u32, 4, "Read unsigned 32 bit integer.");
-    read_number!(read_u48, u64, 6, "Read unsigned 48 bit integer. Stored in u64.");
+    read_number!(
+        read_u48,
+        u64,
+        6,
+        "Read unsigned 48 bit integer. Stored in u64."
+    );
     read_number!(read_u64, u64, 8, "Read unsigned 64 bit integer.");
     read_number!(read_u128, u128, 16, "Read unsigned 128 bit integer.");
 
