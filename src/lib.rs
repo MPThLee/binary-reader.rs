@@ -189,6 +189,8 @@ impl BinaryReader {
         }
     }
 
+    /// Read boolean.
+    /// Note that anything other than `0x00` is considered `true`.
     pub fn read_bool(&mut self) -> std::io::Result<bool> {
         let data = self.read_bytes(1)?;
         Ok(data[0] != 0)

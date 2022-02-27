@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## 0.4.3 (Current)
+## 0.4.4 (Current)
+ - Documentation and test updates.
+ - Support boolean.
+ - Refactor read functions via macro.
+    * This shouldn't affect existing functionality.
+
+## 0.4.3
  - Support 24, 48, 128 bit unsigned/signed integer.
  - More tests with macro.
 
