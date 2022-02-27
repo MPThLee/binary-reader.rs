@@ -225,3 +225,14 @@ fn integer_pos_jump_and_endian_parsing() {
     bin.jmp(0);
     assert_eq!(-1167088121787636991, bin.read_i64().unwrap());
 }
+
+#[test]
+fn adv_and_bool() {
+    let vector: Vec<u8> = vec![0x00, 0x00, 0x01, 0x00];
+    let mut bin = BinaryReader::from_vec(&vector);
+    assert_eq!(false, bin.read_bool().unwrap());
+    bin.adv(1);
+    assert_eq!(2, bin.pos);
+    assert_eq!(true, bin.read_bool().unwrap());
+    assert_eq!(false, bin.read_bool().unwrap());
+}
