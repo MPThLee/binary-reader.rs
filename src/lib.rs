@@ -189,6 +189,11 @@ impl BinaryReader {
         }
     }
 
+    pub fn read_bool(&mut self) -> std::io::Result<bool> {
+        let data = self.read_bytes(1)?;
+        Ok(data[0] != 0)
+    }
+
     // Signed integers
     read_number!(read_i8, i8, "Read signed 8 bit integer.");
     read_number!(read_i16, i16, 2, "Read signed 16 bit integer.");
