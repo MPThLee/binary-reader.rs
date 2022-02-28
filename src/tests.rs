@@ -239,6 +239,37 @@ fn adv_and_bool() {
     assert_eq!(false, bin.read_bool().unwrap());
 }
 
+
+#[test]
+// See `examples/file.rs` for detailed explanation.
+fn read_from_file() {
+    use std::env;
+    use std::fs::File;
+
+    let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+    let mut file = File::open(format!("{}/examples/file.bin", manifest_dir)).unwrap();
+
+    let mut bin = BinaryReader::from_file(&mut file);
+
+    assert_eq!("Hello, world!", bin.read_cstr().unwrap());
+    assert_eq!(-1, bin.read_i64().unwrap());
+    assert_eq!(123456789, bin.read_u32().unwrap());
+    assert_eq!(3.141592653589793, bin.read_f64().unwrap());
+    assert_eq!(1234.56, bin.read_f32().unwrap());
+}
+
+#[test]
+fn align_4_string() {
+    let mut bin = BinaryReader::from_vec(&vec![0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00]);
+    assert_eq!("Hello, World!", bin.read_cstr().unwrap());
+    assert_eq!(14, bin.pos);
+    bin.jmp(9);
+    bin.align(4);
+    assert_eq!(12, bin.pos);
+    assert_eq!("!", bin.read_cstr().unwrap());
+}
+
+
 mod error {
     use crate::*;
     use pretty_assertions::assert_eq;
