@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## 0.4.4 (Current)
+## 0.4.5 (Current)
+ - Documentation and tests updated.
+ - Support cstr with lossy way.
+ - Make more accurate error from cstr functions.
+    * Some `UnexpectedEof` is now returns `InvalidData` error.
+
+## 0.4.4
  - Documentation and test updates.
  - Support boolean.
  - Refactor read functions via macro.
