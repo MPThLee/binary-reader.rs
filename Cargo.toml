@@ -22,3 +22,6 @@ panic = "abort"
 
 [dependencies]
 byteorder = "^1.4"
+
+[dev-dependencies]
+pretty_assertions = "^1.1.0"

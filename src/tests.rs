@@ -1,4 +1,5 @@
 use super::*;
+use pretty_assertions::assert_eq;
 
 // from https://github.com/BurntSushi/byteorder/blob/663358f9d29bddadc1a8e84290ec96925f2cb851/src/lib.rs#L2391-L2394
 pub const U24_MAX: u32 = 16_777_215;
@@ -21,6 +22,7 @@ mod integer_read {
             mod $name {
                 use crate::{BinaryReader, Endian};
                 use byteorder::{BigEndian, ByteOrder, LittleEndian, NativeEndian};
+                use pretty_assertions::assert_eq;
                 #[test]
                 fn big_endian() {
                     let mut buf = [0; 32];
@@ -238,14 +240,14 @@ fn adv_and_bool() {
 }
 
 mod error {
-    use std::vec;
-
     use crate::*;
+    use pretty_assertions::assert_eq;
+    use std::vec;
 
     #[test]
     #[should_panic = "kind: UnexpectedEof"]
     fn read_u8_eof() {
-        let vector: Vec<u8> = vec![0x00, ];
+        let vector: Vec<u8> = vec![0x00];
         let mut bin = BinaryReader::from_vec(&vector);
         bin.read_u8().unwrap();
         bin.read_u8().unwrap();
@@ -264,7 +266,25 @@ mod error {
         let vector: Vec<u8> = vec![0x00];
         let mut bin = BinaryReader::from_vec(&vector);
         assert!(bin.read(2).is_none())
+    }
 
+    #[test]
+    #[should_panic = "kind: UnexpectedEof"]
+    fn force_eof_str_error() {
+        let vector: Vec<u8> = vec![0x00];
+        let mut bin = BinaryReader::from_vec(&vector);
+        bin.length += 1;
+        bin.read_cstr().unwrap();
+    }
+
+    #[test]
+    #[should_panic = "kind: InvalidData"]
+    fn read_invalid_string_test() {
+        let vector: Vec<u8> = vec![0x68, 0x65, 0xFF, 0x6C, 0x6F, 0x00];
+        let mut bin = BinaryReader::from_vec(&vector);
+        assert_eq!("he�lo", bin.read_cstr_lossy().unwrap()); // This works
+
+        bin.jmp(0);
+        bin.read_cstr().unwrap(); // This panics
     }
 }
-

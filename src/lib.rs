@@ -152,9 +152,10 @@ impl BinaryReader {
         Ok(data)
     }
 
-    /// Read cstr.
-    /// Read String(s) until `null`(aka `0x00`).
-    pub fn read_cstr(&mut self) -> std::io::Result<String> {
+    #[doc(hidden)]
+    /// Read to end of data from current offset and Return reversed data.
+    /// This is used for cstr read functions.
+    fn read_cstr_post(&self) -> std::io::Result<Vec<u8>> {
         // "abc" "null" "def"
         let mut data = self
             .data
@@ -172,6 +173,12 @@ impl BinaryReader {
             })?
             .to_vec();
         data.reverse();
+        Ok(data)
+    }
+
+    /// Read cstr strings until `null`(aka `0x00`) using [`std::string::String::from_utf8`].
+    pub fn read_cstr(&mut self) -> std::io::Result<String> {
+        let mut data = self.read_cstr_post()?;
         let mut vec: Vec<u8> = Vec::new();
         loop {
             let a = data.pop().unwrap();
@@ -179,10 +186,25 @@ impl BinaryReader {
                 self.pos += vec.len() + 1;
                 return String::from_utf8(vec).map_err(|err| {
                     Error::new(
-                        ErrorKind::UnexpectedEof,
+                        ErrorKind::InvalidData,
                         format!("failed to convert to string: {:?}", err),
                     )
                 });
+            } else {
+                vec.push(a);
+            }
+        }
+    }
+
+    /// Read cstr strings until `null`(aka `0x00`) using [`std::string::String::from_utf8_lossy`].
+    pub fn read_cstr_lossy(&mut self) -> std::io::Result<String> {
+        let mut data = self.read_cstr_post()?;
+        let mut vec: Vec<u8> = Vec::new();
+        loop {
+            let a = data.pop().unwrap();
+            if a == 0x00 {
+                self.pos += vec.len() + 1;
+                return Ok(String::from_utf8_lossy(&vec).to_string());
             } else {
                 vec.push(a);
             }
