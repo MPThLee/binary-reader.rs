@@ -239,7 +239,6 @@ fn adv_and_bool() {
     assert_eq!(false, bin.read_bool().unwrap());
 }
 
-
 #[test]
 // See `examples/file.rs` for detailed explanation.
 fn read_from_file() {
@@ -260,7 +259,9 @@ fn read_from_file() {
 
 #[test]
 fn align_4_string() {
-    let mut bin = BinaryReader::from_vec(&vec![0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00]);
+    let mut bin = BinaryReader::from_vec(&vec![
+        0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64, 0x21, 0x00,
+    ]);
     assert_eq!("Hello, World!", bin.read_cstr().unwrap());
     assert_eq!(14, bin.pos);
     bin.jmp(9);
@@ -268,7 +269,6 @@ fn align_4_string() {
     assert_eq!(12, bin.pos);
     assert_eq!("!", bin.read_cstr().unwrap());
 }
-
 
 mod error {
     use crate::*;
