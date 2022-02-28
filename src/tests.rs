@@ -236,3 +236,35 @@ fn adv_and_bool() {
     assert_eq!(true, bin.read_bool().unwrap());
     assert_eq!(false, bin.read_bool().unwrap());
 }
+
+mod error {
+    use std::vec;
+
+    use crate::*;
+
+    #[test]
+    #[should_panic = "kind: UnexpectedEof"]
+    fn read_u8_eof() {
+        let vector: Vec<u8> = vec![0x00, ];
+        let mut bin = BinaryReader::from_vec(&vector);
+        bin.read_u8().unwrap();
+        bin.read_u8().unwrap();
+    }
+
+    #[test]
+    #[should_panic = "kind: UnexpectedEof"]
+    fn read_bytes_eof() {
+        let vector: Vec<u8> = vec![0x00, 0x00, 0x00];
+        let mut bin = BinaryReader::from_vec(&vector);
+        bin.read_bytes(4).unwrap();
+    }
+
+    #[test]
+    fn read_eof() {
+        let vector: Vec<u8> = vec![0x00];
+        let mut bin = BinaryReader::from_vec(&vector);
+        assert!(bin.read(2).is_none())
+
+    }
+}
+
