@@ -1,0 +1,15 @@
+name: Dependabot PR Auto Merge
+
+on:
+  pull_request_target:
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2.6
+        with:
+          target: minor
+          command: squash and merge
+          github-token: ${{ secrets.BOT_PA_TOKEN }}
