@@ -128,7 +128,7 @@ impl BinaryReader {
     }
 
     pub fn align(&mut self, size: usize) {
-        self.pos = (self.pos + size - 1) / size * size
+        self.pos = self.pos + size - 1
     }
 
     /// Read provided length size bytes.
