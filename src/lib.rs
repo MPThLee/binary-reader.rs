@@ -127,10 +127,6 @@ impl BinaryReader {
         self.pos += size
     }
 
-    pub fn align(&mut self, size: usize) {
-        self.pos = (self.pos + size - 1) / size * size
-    }
-
     /// Read provided length size bytes.
     pub fn read(&mut self, size: usize) -> Option<&[u8]> {
         let data = self.data.get(self.pos..self.pos + size);
