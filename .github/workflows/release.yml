@@ -19,4 +19,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Release gh-release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
